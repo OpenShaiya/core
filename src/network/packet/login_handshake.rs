@@ -10,7 +10,7 @@ const MODULUS_LENGTH: u8 = 128;
 /// Represents a request from the login server to a client, to initiate a handshake and configure
 /// the AES encryption to use for further communication.
 #[repr(C, packed)]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct LoginHandshakeRequest {
     opcode: u16,
     encrypted: bool,
