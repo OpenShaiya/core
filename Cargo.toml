@@ -1,0 +1,13 @@
+[package]
+name        = "shcore"
+version     = "0.1.0"
+edition     = "2018"
+repository  = "https://github.com/OpenShaiya/core"
+license     = "MIT"
+authors     = ["Triston Plummer <me@triston.io>"]
+
+[lib]
+crate-type  = ["dylib"]
+
+[dependencies]
+rsa         = "0.3.0"
