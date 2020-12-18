@@ -1,3 +1,5 @@
+use rsa::{RSAPublicKey, PublicKeyParts};
+
 /// The opcode for a login handshake.
 pub const LOGIN_HANDSHAKE_OPCODE: u16 = 0xA101;
 
@@ -23,7 +25,7 @@ pub struct LoginHandshakeRequest {
 /// The method implementation for the login handshake request.
 impl LoginHandshakeRequest {
 
-    /// Initialises a new login request.
+    /// Initialises a new handshake request.
     pub fn new() -> LoginHandshakeRequest {
         LoginHandshakeRequest {
             opcode: LOGIN_HANDSHAKE_OPCODE,
@@ -33,6 +35,23 @@ impl LoginHandshakeRequest {
             exponent: [0; EXPONENT_LENGTH as usize],
             modulus: [0; MODULUS_LENGTH as usize]
         }
+    }
+
+    /// Initialises a handshake request from a given RSA public key.
+    ///
+    /// # Arguments
+    /// * `public_key` - The 1024-bit RSA public key to send in the handshake request.
+    pub fn from_key(public_key: &RSAPublicKey) -> LoginHandshakeRequest {
+        let e = public_key.e().to_bytes_le();
+        let n = public_key.n().to_bytes_le();
+        assert_eq!(n.len(), MODULUS_LENGTH as usize);
+
+        let mut request = LoginHandshakeRequest::new();
+        request.exponent_length = e.len() as u8;
+        request.modulus_length = n.len() as u8;
+        request.exponent[..e.len()].clone_from_slice(e.as_slice());
+        request.modulus[..n.len()].clone_from_slice(n.as_slice());
+        return request;
     }
 }
 
