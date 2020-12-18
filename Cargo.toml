@@ -10,4 +10,5 @@ authors     = ["Triston Plummer <me@triston.io>"]
 crate-type  = ["dylib"]
 
 [dependencies]
-rsa         = "0.3.0"
+bytes   = "0.6"
+rsa     = "0.3.0"
