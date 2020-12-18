@@ -7,7 +7,7 @@ license     = "MIT"
 authors     = ["Triston Plummer <me@triston.io>"]
 
 [lib]
-crate-type  = ["dylib"]
+crate-type  = ["lib"]
 
 [dependencies]
 bytes   = "0.6"
