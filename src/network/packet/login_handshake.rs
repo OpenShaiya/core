@@ -71,14 +71,7 @@ impl SerializablePacket for LoginHandshakeRequest {
 #[cfg(test)]
 mod tests {
     use crate::network::packet::LoginHandshakeRequest;
-    use core::mem;
     use crate::network::packet::login_handshake::{LOGIN_HANDSHAKE_OPCODE, EXPONENT_LENGTH, MODULUS_LENGTH};
-
-    /// Test the length of the handshake packet.
-    #[test]
-    fn test_packet_length() {
-        assert_eq!(mem::size_of::<LoginHandshakeRequest>(), 197);
-    }
 
     /// Test that the opcode and public key sizes are correct in a default-initialised struct.
     #[test]
