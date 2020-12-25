@@ -3,7 +3,7 @@
 
 The core library, which houses common functionality used by multiple projects. This includes packet data structures, cryptography, and accessing the proprietary data files.
 
-OpenShaiya requires the original Shaiya data files to properly emulate the game's behaviour, which we cannot legally distribute.
+OpenShaiya requires the original Shaiya data files to properly emulate the game's behaviour, which we cannot legally distribute. Therefore you must provide your own copy of any relevant files you wish to use.
 
 ## Using this library
 The recommended way to use this library is to simply add the Git repository as a dependency in your `Cargo.toml` file, such as:
