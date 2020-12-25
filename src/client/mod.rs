@@ -5,7 +5,7 @@ use byteorder::{ReadBytesExt, LittleEndian};
 use bytes::BytesMut;
 
 /// Represents a valid SAH header.
-const HEADER_MAGIC_VALUE: &'static str = "SAH";
+const HEADER_MAGIC_VALUE: &str = "SAH";
 
 /// A `workspace` is a collection of the files contained within a folder or archive file.
 pub struct Workspace {
@@ -66,7 +66,7 @@ impl Workspace {
             }
         }
 
-        Err(format!("Unable to find file with path: {}", path).to_owned())?
+        Err(format!("Unable to find file with path: {}", path)).unwrap()
     }
 
     /// Gets a folder at a specified path.
@@ -95,7 +95,7 @@ impl Workspace {
             return Ok(folder)
         }
 
-        Err(format!("Unable to find folder with path: {}", path).to_owned())?
+        Err(format!("Unable to find folder with path: {}", path)).unwrap()
     }
 
     /// Reads the data for a file.
@@ -108,12 +108,12 @@ impl Workspace {
         let available_data = data.metadata()?.len() as usize;
 
         if required_data > available_data {
-            Err(format!("Required file length exceeds the data available (required: {}, available: {})", required_data, available_data))?
+            Err(format!("Required file length exceeds the data available (required: {}, available: {})", required_data, available_data)).unwrap()
         }
 
         let mut file_buf: Vec<u8> = vec![0; file.length as usize];
         data.seek(SeekFrom::Start(file.offset as u64))?;
-        data.read(&mut file_buf)?;
+        data.read_exact(&mut file_buf)?;
         Ok(BytesMut::from(file_buf.as_slice()))
     }
 }
@@ -129,7 +129,7 @@ fn parse_header(header_file: &mut File, folder: &mut SFolder) -> Result<()> {
     header_file.read_exact(&mut header)?;
     let header = std::str::from_utf8(&header)?;
     if header != HEADER_MAGIC_VALUE {
-        Err(format!("Invalid SAH header: {}", header))?
+        Err(format!("Invalid SAH header: {}", header)).unwrap()
     }
 
     // Skip the next 4 bytes, read the total file count, and then skip another 45 bytes

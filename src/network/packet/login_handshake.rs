@@ -52,7 +52,7 @@ impl LoginHandshakeRequest {
         request.modulus_length = n.len() as u8;
         request.exponent[..e.len()].clone_from_slice(e.as_slice());
         request.modulus[..n.len()].clone_from_slice(n.as_slice());
-        return request;
+        request
     }
 }
 
