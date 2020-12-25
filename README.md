@@ -12,5 +12,19 @@ The recommended way to use this library is to simply add the Git repository as a
 shcore = { git = "https://github.com/OpenShaiya/core/" }
 ```
 
+## Querying the client's data archive
+Querying a data archive from the game client can be done with a simple:
+```rust
+use shcore::client::Workspace;
+use shcore::Result;
+
+fn main() -> Result<()> {
+    let workspace = Workspace::from_archive("data.sah", "data.saf")?;
+    let items = workspace.file("item/item.sdata")?;
+    println!("Item file: {:?}", items);
+    Ok(())
+}
+
+```
 ## License
-OpenShaiya is available under the terms of the [MIT license](https://tldrlegal.com/license/mit-license). The fully copyright notice and terms are available in the `LICENSE` file.
+OpenShaiya is available under the terms of the [MIT license](https://tldrlegal.com/license/mit-license). The full copyright notice and terms are available in the `LICENSE` file.
