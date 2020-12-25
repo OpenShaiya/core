@@ -1,5 +1,5 @@
 # OpenShaiya Core Library
-![Build status](https://github.com/OpenShaiya/core/workflows/Rust/badge.svg)
+![Build status](https://github.com/OpenShaiya/core/workflows/build/badge.svg)
 
 The core library, which houses common functionality used by multiple projects. This includes packet data structures, cryptography, and accessing the proprietary data files.
 
