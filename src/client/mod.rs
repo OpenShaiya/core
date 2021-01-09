@@ -3,6 +3,7 @@ use crate::Result;
 use std::io::{Read, Seek, SeekFrom};
 use byteorder::{ReadBytesExt, LittleEndian};
 use bytes::BytesMut;
+use std::path::Path;
 
 /// Represents a valid SAH header.
 const HEADER_MAGIC_VALUE: &str = "SAH";
@@ -115,6 +116,46 @@ impl Workspace {
         data.seek(SeekFrom::Start(file.offset as u64))?;
         data.read_exact(&mut file_buf)?;
         Ok(BytesMut::from(file_buf.as_slice()))
+    }
+
+    /// Dumps the contents of the workspace to an output directory.
+    ///
+    /// # Arguments
+    /// * `out_dir` - The root directory to write the files to.
+    pub fn dump(&self, out_dir: &str) -> Result<()> {
+        let metadata = std::fs::metadata(out_dir)?;
+        if !metadata.is_dir() {
+            Err("Output path is not a valid directory.").unwrap()
+        }
+
+        let path = Path::new(out_dir);
+        self.dump_folder(&self.root, path)?;
+        Ok(())
+    }
+
+    /// Recursively dumps the contents of a folder to a specified path. This will create
+    /// the required directories where necessary.
+    ///
+    /// # Arguments
+    /// * `folder`  - The folder that is currently being processed.
+    /// * `path`    - The path of the folder.
+    fn dump_folder(&self, folder: &SFolder, path: &Path) -> Result<()> {
+        // Write all the files in the current folder
+        for file in &folder.files {
+            let data = self.data(&file)?;
+            let file_path = Path::join(path, Path::new(file.name.as_str()));
+            std::fs::write(file_path.as_path(), data.to_vec())?;
+        }
+
+        // Dump all of the subfolders in this current folder
+        for folder in &folder.folders {
+            let folder_path = Path::join(path, Path::new(folder.name.as_str()));
+            let path = folder_path.as_path();
+            std::fs::create_dir_all(path)?;
+            self.dump_folder(folder, path)?;
+        }
+
+        Ok(())
     }
 }
 
